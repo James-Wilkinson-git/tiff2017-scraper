@@ -9,7 +9,9 @@ filmsDataSrc = HTTParty.get('http://www.tiff.net/data/films-events.json')
 filmsData = JSON.parse(filmsDataSrc.body)
 
 filmsData["items"].each do |film|
-  filmUrls.push("http://www.tiff.net/data#{film['url']}.json")
+  if(film['url'].start_with?("/film"))
+    filmUrls.push("http://www.tiff.net/data#{film['url']}.json")
+  end
 end
 File.open("urls.json", "w") do |f|
   f.write(JSON.pretty_generate(filmUrls))
